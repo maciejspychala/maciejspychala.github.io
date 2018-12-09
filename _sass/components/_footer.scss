@@ -1,0 +1,39 @@
+footer {
+    margin-top: 70px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #888;
+    position: relative;
+    text-align: center;
+
+    .footer-text :not(:last-child):after {
+        content: ' \00B7 ';
+    }
+
+    @media #{$small} {
+        .footer-text :first-child:after {
+            content: '';
+        }
+
+        .made_by {
+            display: block;
+        }
+    }
+
+    .social-icons a div {
+        display: inline;
+        margin: 0px 15px;
+
+        .icon {
+            height: 10px;
+        }
+    }
+
+    a div {
+        white-space: nowrap;
+    }
+}
+
+.footer-text {
+    margin-bottom: 10px;
+}

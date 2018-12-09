@@ -1,0 +1,45 @@
+header {
+    margin-top: 16px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+
+    @media #{$small} {
+        display: block;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 1rem;
+        @media #{$small} {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+    }
+
+    ul {
+        list-style: none;
+
+        @media #{$small} {
+            text-align: center;
+        }
+
+    }
+
+    ul li {
+        margin: 0;
+        display: inline-block;
+        font-size: 1rem;
+        top: 50%;
+    }
+
+    li:not(:last-child):after {
+        content: ' / ';
+    }
+
+    a {
+        color: inherit;
+        text-decoration: inherit;
+        font-weight: inherit;
+    }
+}

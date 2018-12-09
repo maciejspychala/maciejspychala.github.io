@@ -1,0 +1,31 @@
+title: mcksp.com
+email: mac.spychala@gmail.com
+description: Humble programmer's blog who just wants to have fun.
+baseurl: ""
+url: https://mcksp.com
+permalink: /:title
+
+about:
+    github: https://github.com/maciejspychala
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+karmdown:
+    input: GFM
+    syntax_highlighter: rouge
+    syntax_highlighter_opts:
+        css_class: 'highlight'
+        span:
+            line_numbers: false
+        block:
+            line_numbers: true
+            start_line: 1
+plugins:
+  - jekyll-feed
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - create_tags.sh
+  - README.md
+  - CNAME

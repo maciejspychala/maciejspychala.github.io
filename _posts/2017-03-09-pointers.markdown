@@ -1,0 +1,237 @@
+---
+layout: post
+title:  "Programming in C: pointers"
+imgdir:  "pointers"
+date:   2017-03-09 23:10:00 +0100
+excerpt: "First rule of C language: everything has an address. Simple guide into pointers in C."
+tags: c
+---
+# Pointers: Intro
+First rule of C language: everything has an address.
+Yeah, that `int i` in your `for` loop has it, and that first `printf()` with "hello world" also.
+
+How to check it? `&` before the variable will give you an address of variable. To get address of function just write its name.
+{% highlight c linenos=table %}
+#include <stdio.h>
+
+int main() {
+    int i = 0;
+    printf("address of i: %p\n", &i);
+    printf("address of printf: %p\n", printf);
+    return 0;
+}
+{% endhighlight %}
+
+{% highlight c linenos=table %}
+address of i: 0x7ffdb0a9cf64
+address of printf: 0x400470
+{% endhighlight %}
+
+First thing to remember: functions are stored in different place that all variables. _Probably_ in some read-only memory page. Value of variables, as their beautiful name say (Latin *variare* - to change) may vary, so they are stored on writable pages of your RAM.
+
+Now let's focus more on variables. We will create a pointer to a variable. To "extract" the value which pointer points we will use `*`. Also to create pointer we will use `*`. Yeah, it will be hard at first.
+
+{% highlight c linenos=table %}
+int main() {
+    int i = 123;
+    int *p_i = &i;
+    // we assign address of i value to pointer p_i which can points on int values
+    printf("address of i: %p\n", &i);
+    printf("value of p_i: %p\n", p_i);
+    printf("address of p_i: %p\n\n", &p_i);
+
+    printf("value of i: %d\n", i);
+    printf("value at which p_i points: %d\n", *p_i);
+    // '*' dereference the p_i and gives value in address inside 
+    
+    //let's change value at which p_i reference
+    *p_i = 321;
+    printf("\nafter change:\n");
+    printf("value of i: %d\n", i);
+    printf("value at which p_i points: %d\n", *p_i);
+
+    return 0;
+}
+{% endhighlight %}
+
+{% highlight c linenos=table %}
+address of i: 0x7ffd24dc0e0c
+value of p_i: 0x7ffd24dc0e0c
+address of p_i: 0x7ffd24dc0e10
+
+value of i: 123
+value at which p_i points: 123
+
+after change:
+value of i: 321
+value at which p_i points: 321
+{% endhighlight %}
+
+Whoa, whoa, Maciek, please, slow down.
+
+Ok, sorry. Let's translate it to my version of English language.
+
+{% highlight c linenos=table %}
+int *p_i = &i;
+{% endhighlight %}
+
+Here we declare a pointer `int *p_i`. Because it's `int` pointer, it will points on `int` values. The value inside `p_i` is the address of `i` variable, but `p_i` itself has it's own adress.
+
++ `p_i` -> address at which pointer is pointing
+
++ `*p_i` -> value at which pointer is pointing
+
++ `&p_i` -> address of pointer
+
+Now, when you will change value at memory address at which `p_i` points, the value of `i` will also change, because these are the same bytes in memory!
+
+How it looks in your ram?
+
+{% include image.html image='pointers.png' caption='Please forgive me, my first tablet drawing here.' %}
+
+You may ask: why `i` is only in one bucket and `p_i` in two?
+
+I will answer: because of size. I'm on 64 bit machine, so my pointers take 64 bits in memory. And every pointer on any variable will take 64 bit, because it point on memory address.  `int` on my machine takes only 32.
+
+Then you will ask: ok, but why you put two halfs of `0x7ffd24dc0e0c` in wrong order?
+
+I will answer: because that's how it was stored on my computer. Long, long time ago, there was no xbox, so people can't argue about which console is better. But every age must have its own battle. So they came up with idea: half of us will store numbers in computer from most significant byte and other half will store from least siginificant byte. And the war began. Well, it looks like the second half wins, the tribe called: Little Endian. More info -> [wikipedia](https://en.wikipedia.org/wiki/Endianness)
+
+Oorah! We now know something. But it's just the beginning.
+# Arrays in C
+
+Arrays in C mostly look like a pointer, but sometimes they behave a little bit different. For example:
+{% highlight c linenos=table %}
+int main() {
+    int arr[5] = {1, 2, 3, 4, 5};
+    int *ptr = arr;
+    printf("sizeof arr: %lu\n", sizeof(arr));
+    printf("sizeof ptr: %lu\n", sizeof(ptr));
+    return 0;
+}
+{% endhighlight %}
+
+{% highlight c linenos=table %}
+sizeof arr: 20
+sizeof ptr: 8
+{% endhighlight %}
+
+`sizeof(arr)` returns size of the whole array in bytes, `sizeof(ptr)` only size of the pointer.
+
+Also, you can't change value of array name. You can't write:
+
+{% highlight c linenos=table %}
+int arr[5] = {1, 2, 3, 4, 5}
+arr = arr + 1;
+{% endhighlight %}
+
+[More info](http://eli.thegreenplace.net/2009/10/21/are-pointers-and-arrays-equivalent-in-c). So, you can't say that they are the *same*, but they behave in a very simmilar way.
+
+
+Let's try it!
+
+{% highlight c linenos=table %}
+int main() {
+    int arr[5] = {1, 2, 3, 4, 5};
+    printf("Address of first element: %p\n", &arr[0]);
+    printf("Value inside array: %p\n", arr);
+    return 0;
+}
+{% endhighlight %}
+
+{% highlight c linenos=table %}
+Address of first element: 0x7fffd484bb70
+Value inside array:       0x7fffd484bb70
+{% endhighlight %}
+
+It looks like the addresses are the same! Now, I will show you other thing about pointers. (In next few examples I will use `arr` from previous snippet)
+{% highlight c linenos=table %}
+for (int i = 0; i < 5; i++) {
+    printf("%d ", *(arr+i));
+}
+{% endhighlight %}
+
+{% highlight c linenos=table %}
+1 2 3 4 5
+{% endhighlight %}
+
+Why if we add 1 to our pointer referencing first element of array we get second, despite fact, that `int` takes 4 bytes, not 1? Well, C is clever. It knows that it is an array of `int`, and it know the `sizeof(int)`. When you add 1 to pointer, pointer moves to the next element of an array, not next byte. Of course, you can still use `arr[1]` notation.
+
+### Programming in C is really simple
+A little funny programming trick in C:
+
+{% highlight c linenos=table %}
+printf("arr[2]: %d", 2[arr]);
+{% endhighlight %}
+
+{% highlight c linenos=table %}
+3
+{% endhighlight %}
+
+How does it works? As you see in the previous example `arr[i]` is simply translated to `*(arr + i)`. So `2[arr]` is translated to `*(2 + arr)`. Addition is commutative and boom!
+
+# Passing pointers to functions
+The last thing will be passing pointers to functions. Probably this is the reason why you started looking for pointers :D
+
+So, variables by default are passed by value to function. Function makes a copy of it, place it in different memory address, makes computing on it and function ends, leaving original variable untouched. But, when you will pass address to the variable, function will operate on this specific memory address, so function will change your original variable. Let's test it
+
+{% highlight c linenos=table %}
+#include <stdio.h>
+
+void add_two(int a) {
+    printf("address inside function: %p\n", &a);
+    a += 2;
+    printf("value inside function: %d\n", a);
+}
+
+int main() {
+    int x = 10;
+    printf("address in main: %p\n", &x);
+    printf("value before function: %d\n", x);
+    add_two(x);
+    printf("value after function: %d\n", x);
+    return 0;
+}
+{% endhighlight %}
+
+{% highlight c linenos=table %}
+address in main: 0x7ffdaa1ee854
+value before function: 10
+address inside function: 0x7ffdaa1ee83c
+value inside function: 12
+value after function: 10
+{% endhighlight %}
+
+As you see, address of variable is different inside and outside `add_two(int)`. Function operates on copy of `x`. Now let's pass it as a pointer.
+
+
+{% highlight c linenos=table %}
+#include <stdio.h>
+
+void add_two(int *a) {
+    printf("address inside function: %p\n", a);
+    *a += 2;
+    printf("value inside function: %d\n", *a);
+}
+
+int main() {
+    int x = 10;
+    printf("address in main: %p\n", &x);
+    printf("value before function: %d\n", x);
+    add_two(&x);
+    printf("value after function: %d\n", x);
+    return 0;
+}
+{% endhighlight %}
+
+{% highlight c linenos=table %}
+address in main: 0x7ffd317da294
+value before function: 10
+address inside function: 0x7ffd317da294
+value inside function: 12
+value after function: 12
+{% endhighlight %}
+
+Yeah! the value remains changed outside the function, and the address inside the function is the same as the address of the original variable. Passing value as pointer has another adventage: you don't have to copy all the bytes that you want to operate on. For example, if you will pass image 1920x1080 by value, first you must copy 1920\*1080\*3 bytes. That's a lot. When you pass it by pointer, you will have to copy probably only 8 bytes (deppends on your system). It will save you a lot of time and memory. 
+
+That's all for today, as you see, pointers are not that bad. They give you a great power, but with great power comes great responsibility.

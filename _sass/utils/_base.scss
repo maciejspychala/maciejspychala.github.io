@@ -1,0 +1,133 @@
+html {
+    font-size: $font-base-size;
+    overflow-y: scroll;
+    line-height: 1.5rem;
+}
+
+article p {
+    text-align: justify;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+article ul {
+    margin-left: 40px;
+}
+
+.page-all {
+    margin: 0 auto;
+    padding: 50px 10px 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    font-family:inherit;
+    color: #040404;
+    margin: 1.3rem 0 0.7rem 0;
+}
+
+h1 {
+    font-size: 1.4rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+}
+
+h3, h4, h5, h6 {
+    font-size: 1.1rem;
+}
+
+figure {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    text-align: center;
+    &.highlight {
+        text-align: left;
+    }
+}
+
+.tag {
+    color: #999;
+    text-decoration: inherit;
+    font-weight: inherit;
+    font-size: 1rem;
+    margin: 0px 8px;
+
+}
+
+.tag:hover {
+    color: #000;
+}
+
+.tag_cloud {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.post-title {
+    text-align: center;
+}
+
+body {
+    font-family: Inconsolata, Consolas, "Liberation Mono", Menlo, Courier, monospace; 
+    width: 100%;
+    max-width: $page-max-width;
+    margin: 0 auto;
+    scroll-behavior: smooth;
+}
+
+
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+figure figcaption{
+    text-align: center;
+    color: #555;
+}
+
+
+a {
+    color: inherit;
+
+    &:hover {
+        color: #000;
+    }
+}
+
+pre code {
+    font-size: 0.8rem;
+}
+
+p {
+    color: #222;
+}
+
+a.social {
+    text-decoration: inherit;
+}
+
+.icon img {
+    vertical-align: middle;
+    height: 18px;
+    width: 18px;
+}
+
+.post-title {
+    margin-bottom: 32px;
+}
+
+blockquote {
+    font-style: italic;
+    font-weight: 100;
+    opacity: 0.8;
+}

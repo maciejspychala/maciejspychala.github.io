@@ -1,0 +1,9 @@
+---
+layout: default
+title: tags
+---
+<div class="tag_cloud">
+    {% for tag in site.tags %}
+    <a class="tag" href="/tags/{{tag.first}}" title={{tag.first}}>{{ tag.first }}</a>
+    {% endfor %}
+</div>

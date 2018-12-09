@@ -1,0 +1,32 @@
+.post-meta {
+    color: #999;
+
+    .date {
+	display: inline;
+	margin-right: 64px;
+	@media #{$small} {
+	    display: block;
+	    margin-right: 0px;
+	}
+    }
+
+    ul.tag-list {
+	display: inline;
+	list-style: none;
+	@media #{$small} {
+	    display: block;
+	}
+
+	li {
+	    display: inline-block;
+	}
+
+	li:not(:last-child):after {
+	    content: '/';
+	}
+
+	li:first-child a {
+	    margin: 0px 0px;
+	}
+    }
+}
